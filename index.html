@@ -3,21 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoolKidZ Registration</title>
+    <title>CoolKidZ Homepage</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="registration-container">
-        <h1>Register</h1>
-        <form id="registrationForm">
-            <label for="username">Username (6-9 letters):</label>
-            <input type="text" id="username" required minlength="6" maxlength="9" placeholder="Enter your username">
-            <label for="password">Password:</label>
-            <input type="password" id="password" required placeholder="Enter your password">
-            <button type="submit">Register</button>
-        </form>
-        <p id="errorMessage" style="color: red;"></p>
+    <header>
+        <h1>CoolKidZ</h1>
+        <div>
+            <button id="sign-out-btn">Sign Out</button>
+            <button id="add-video-btn" class="green-button">Add Video</button>
+        </div>
+    </header>
+    <div class="container">
+        <div class="video-container">
+            <iframe 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/p3NXd3DhH08" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
+
+    <div id="add-video-modal">
+        <h2>Add Your Video</h2>
+        <form id="video-form">
+            <label for="video-file">Choose a file:</label>
+            <input type="file" id="video-file" accept="video/*"><br><br>
+            <button type="button" id="confirm-add-btn" class="green-button">Add</button>
+            <button type="button" id="exit-add-btn">Exit</button>
+        </form>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
