@@ -1,42 +1,58 @@
 body {
     font-family: Arial, sans-serif;
+    background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXJ0fGVufDB8fDB8fHww');
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
     margin: 0;
     padding: 0;
-    background-image: url('https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=900&auto=format&fit=crop&q=60');
-    background-size: cover;
-    color: white;
 }
 
-.registration-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-form {
+header {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6);
 }
 
-input {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-    border: none;
+h1 {
+    margin: 0;
 }
 
 button {
-    padding: 10px;
-    background-color: #28a745;
-    color: white;
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
-button:hover {
-    background-color: #218838;
+.green-button {
+    background-color: green;
+    color: white;
+}
+
+.video-container {
+    margin-top: 50px;
+    text-align: center;
+}
+
+#add-video-modal {
+    display: none;
+    position: fixed;
+    top: 20%;
+    left: 30%;
+    width: 40%;
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+#add-video-modal h2 {
+    margin-top: 0;
+    color: #333;
 }
