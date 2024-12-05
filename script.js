@@ -1,22 +1,32 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const registrationForm = document.getElementById('registrationForm');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const errorMessage = document.getElementById('errorMessage');
+// Get references to elements
+const signOutBtn = document.getElementById('sign-out-btn');
+const addVideoBtn = document.getElementById('add-video-btn');
+const addVideoModal = document.getElementById('add-video-modal');
+const confirmAddBtn = document.getElementById('confirm-add-btn');
+const exitAddBtn = document.getElementById('exit-add-btn');
 
-    // Registration form submission
-    registrationForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value.trim();
+// Sign out functionality
+signOutBtn.addEventListener('click', () => {
+    window.location.href = "register.html"; // Redirect to registration page
+});
 
-        if (username.length < 6 || username.length > 9 || !password) {
-            errorMessage.textContent = "Please enter a valid username (6-9 letters) and password.";
-            return;
-        }
+// Open the "Add Video" modal
+addVideoBtn.addEventListener('click', () => {
+    addVideoModal.style.display = 'block';
+});
 
-        // Save the username in localStorage and redirect
-        localStorage.setItem('username', username);
-        window.location.href = 'index.html'; // Redirect to homepage (set this to your homepage URL)
-    });
+// Close the modal when "Exit" is clicked
+exitAddBtn.addEventListener('click', () => {
+    addVideoModal.style.display = 'none';
+});
+
+// Confirm adding video
+confirmAddBtn.addEventListener('click', () => {
+    const videoFile = document.getElementById('video-file').files[0];
+    if (videoFile) {
+        alert(`Video "${videoFile.name}" added successfully!`);
+        addVideoModal.style.display = 'none';
+    } else {
+        alert('Please select a video file to add.');
+    }
 });
