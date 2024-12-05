@@ -7,7 +7,7 @@ const exitAddBtn = document.getElementById('exit-add-btn');
 
 // Sign out functionality
 signOutBtn.addEventListener('click', () => {
-    window.location.href = "register.html"; // Redirect to registration page
+    window.location.href = "https://codepen.io/KIDS-LEARNING-FOR-EVRYONE/pen/KwPVaQg";
 });
 
 // Open the "Add Video" modal
@@ -17,16 +17,4 @@ addVideoBtn.addEventListener('click', () => {
 
 // Close the modal when "Exit" is clicked
 exitAddBtn.addEventListener('click', () => {
-    addVideoModal.style.display = 'none';
-});
-
-// Confirm adding video
-confirmAddBtn.addEventListener('click', () => {
-    const videoFile = document.getElementById('video-file').files[0];
-    if (videoFile) {
-        alert(`Video "${videoFile.name}" added successfully!`);
-        addVideoModal.style.display = 'none';
-    } else {
-        alert('Please select a video file to add.');
-    }
-});
+    addVideoModal
