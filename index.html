@@ -21,11 +21,13 @@
         header {
             position: absolute;
             top: 20px;
-            left: 20px;
+            right: 20px; /* Position buttons on the top right */
+            text-align: right; /* Align buttons to the right */
         }
 
         h1 {
             margin-bottom: 20px;
+            text-align: center; /* Center align the title */
         }
 
         .video-container {
@@ -118,7 +120,7 @@
         // Sign out button functionality
         document.getElementById('sign-out-btn').addEventListener('click', function() {
             localStorage.removeItem('coolkidzUsername'); // Clear stored username
-            window.location.href = 'https://codepen.io/KIDS-LEARNING-FOR-EVRYONE/pen/KwPVaQg'; // Redirect to registration
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration
         });
 
         // Confirm adding video (for demonstration purposes)
