@@ -6,46 +6,68 @@
     <title>CoolKidZ</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1563268381-06ddf2b1f46d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGZsb3dlciUyMHNrZXRjaCUyMGJsYWNrJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D');
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            height: 100vh;
+            color: white;
+            padding: 20px;
         }
 
-        .header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
+        header {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .nav button {
-            margin-left: 10px;
-        }
-
-        .welcome-message {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .video-section {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .video-preview {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .about-us {
-            text-align: center;
-            margin: 20px;
             padding: 10px;
-            background-color: white;
+        }
+
+        #welcome-message {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        #prompt-message {
+            color: yellow; /* Different color for the prompt */
+            margin-top: 50px; /* Space below the welcome message */
+            font-size: 1.2em; /* Slightly larger font */
+        }
+
+        button {
+            padding: 10px;
+            border: none;
             border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px; /* Adjusted margin to position below welcome message */
+        }
+
+        .video-container {
+            margin-top: 20px;
+        }
+
+        .video {
+            margin: 10px 0;
+        }
+
+        #add-video-container {
+            display: none;
+            margin-top: 20px;
         }
     </style>
 </head>
