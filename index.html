@@ -3,149 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoolKidZ Homepage</title>
+    <title>CoolKidZ Registration</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1563268381-06ddf2b1f46d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGZsb3dlciUyMHNrZXRjaCUyMGJsYWNrJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D');
-            background-color: #f0f0f0;
+            background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXJ0fGVufDB8fDB8fHww');
+            background-size: cover;
+            background-position: center;
             margin: 0;
             padding: 0;
         }
 
-        .header {
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .nav {
-            background-color: #4CAF50;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .nav button {
-            margin-left: 10px;
-            padding: 10px 15px;
-            background-color: white;
+        h1 {
+            text-align: center;
             color: #4CAF50;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
+            font-size: 16px;
             cursor: pointer;
         }
 
-        .nav button:hover {
-            background-color: #e0e0e0;
+        .btn:hover {
+            background-color: #45a049;
         }
 
-        .welcome-message {
+        .video-container {
+            margin-top: 30px;
             text-align: center;
-            margin: 20px 0;
+        }
+
+        .signout-btn {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #FF5733;
             color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
         }
 
-        .video-section {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .about-us {
-            text-align: center;
-            margin: 20px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 5px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .about-us p {
-            margin: 10px 0;
+        .signout-btn:hover {
+            background-color: #e94c2f;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>CoolKidZ</h1>
-        <div class="nav">
-            <button id="logoutBtn">Log Out</button>
-            <button id="addVideoBtn">Add Video</button>
-            <button id="signupBtn">Sign Up</button>
-        </div>
+
+    <!-- Registration Form -->
+    <div class="container">
+        <h1>CoolKidZ Registration</h1>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="username">Username (6-9 letters):</label>
+                <input type="text" id="username" name="username" minlength="6" maxlength="9" required>
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
     </div>
 
-    <div id="welcomeMessage" class="welcome-message" style="display: none;">
-        <h2>Welcome back, <span id="username"></span>!</h2>
+    <!-- YouTube Video Display -->
+    <div class="video-container">
+        <h2>Welcome to CoolKidZ!</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
-    <div class="video-section">
-        <h3>Videos:</h3>
-        <iframe id="userVideoIframe" width="560" height="315" style="display: none;" frameborder="0" allowfullscreen></iframe>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" frameborder="0" allowfullscreen></iframe>
-    </div>
-
-    <div class="about-us">
-        <h3>About Us</h3>
-        <p>Welcome to CoolKidZ, where creativity has no limits! We provide a space for kids to share their unique talents and interests. Whether it's music, sports, or anything else, this is the place to express yourself.</p>
-        <p>Our platform encourages everyone to shine in their own way, without judgment. Here, everyone has the chance to show what makes them special, no matter their background or skill level.</p>
-        <p>We believe that every child deserves a safe environment to explore their passions and connect with like-minded individuals. With video sharing and creative content, we make it easy to be part of a fun, vibrant community.</p>
-        <p>CoolKidZ is not just about sharing videos—it's about sharing experiences, learning, and growing together. It's about building confidence and supporting each other every step of the way.</p>
-        <p>Join us on this exciting adventure of discovery and creativity! Let's make the world a little brighter, one talent at a time.</p>
-    </div>
+    <!-- Sign Out Button -->
+    <button class="signout-btn" id="signOutButton" style="display: none;" onclick="signOut()">Sign Out</button>
 
     <script>
-        // Get username from localStorage
-        const username = localStorage.getItem("username");
-        if (username) {
-            document.getElementById("username").textContent = username;
-            document.getElementById("welcomeMessage").style.display = "block"; // Show welcome message
-        } else {
-            // If no username found, redirect to registration page
-            window.location.href = "index.html";
-        }
+        // Handle Registration
+        const form = document.getElementById('registrationForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        // Log Out button functionality
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            localStorage.removeItem("username"); // Clear username from localStorage
-            window.location.href = "index.html"; // Redirect to registration page
-        });
-
-        // Add Video button functionality
-        document.getElementById("addVideoBtn").addEventListener("click", () => {
-            const videoType = prompt("Do you want to add a video URL or select a file? (Enter 'url' or 'file')");
-            if (videoType === "url") {
-                const videoUrl = prompt("Please enter the URL of your video:");
-                if (videoUrl) {
-                    document.getElementById("userVideoIframe").src = videoUrl;
-                    document.getElementById("userVideoIframe").style.display = 'block';
-                }
-            } else if (videoType === "file") {
-                const fileInput = document.createElement("input");
-                fileInput.type = "file";
-                fileInput.accept = "video/*";
-                fileInput.onchange = (event) => {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const fileURL = URL.createObjectURL(file);
-                        document.getElementById("userVideoIframe").src = fileURL;
-                        document.getElementById("userVideoIframe").style.display = 'block';
-                    }
-                };
-                fileInput.click();
+            const username = document.getElementById('username').value;
+            
+            if (username.length >= 6 && username.length <= 9) {
+                // Simulate redirect after successful registration
+                alert("Registration successful! Redirecting to your CoolKidZ profile...");
+                window.location.href = "https://codepen.io/KIDS-LEARNING-FOR-EVRYONE/pen/azodByN";
             } else {
-                alert("Invalid option! Please choose 'url' or 'file'.");
+                alert("Please enter a valid username (6-9 letters).");
             }
         });
 
-        // Sign Up button functionality
-        document.getElementById("signupBtn").addEventListener("click", () => {
-            window.location.href = "index.html"; // Redirect to registration page
-        });
+        // Sign Out Button
+        function signOut() {
+            alert("You have been signed out.");
+            window.location.reload();
+        }
     </script>
+
 </body>
 </html>
