@@ -12,26 +12,22 @@
             background-size: cover;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
+            align-items: center;
+            justify-content: center;
             height: 100vh;
             color: white;
-            padding: 20px;
+            text-align: center;
+        }
+
+        header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
         }
 
         h1 {
-            margin-bottom: 20px;
-        }
-
-        .container {
-            text-align: left; /* Align text to the left */
-        }
-
-        .register-box {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
+            margin: 20px 0;
         }
 
         button {
@@ -41,126 +37,82 @@
             background-color: #28a745;
             color: white;
             cursor: pointer;
+            margin: 0 5px;
             transition: background-color 0.3s;
-            margin-right: 10px; /* Add space between buttons */
         }
 
         button:hover {
             background-color: #218838;
         }
 
-        #add-video-modal {
-            display: none; /* Hide modal by default */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 100;
+        #welcome-message {
+            font-size: 24px;
+            margin-top: 50px;
         }
 
-        #message {
-            margin-top: 15px;
-            color: yellow; /* Color for success/error messages */
+        #sign-in-prompt {
+            font-size: 18px;
+            margin-top: 10px;
         }
 
         .video-container {
-            margin-top: 20px; /* Space above video container */
+            margin-top: 30px;
+        }
+
+        .green-button {
+            background-color: #28a745;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>CoolKidZ</h1>
-        <div>
-            <button id="sign-out-btn">Sign Out</button>
-            <button id="add-video-btn" class="green-button">Add Video</button>
-            <button id="sign-in-btn">Sign In</button>
-        </div>
+        <button id="sign-out-btn">Sign Out</button>
+        <button id="add-video-btn" class="green-button">Add Video</button>
     </header>
+    
     <div class="container">
-        <h2>Welcome to CoolKidZ!</h2>
-        <p>Share your creativity and have fun!</p>
+        <div id="welcome-message"></div>
+        <div id="sign-in-prompt">Please sign in to continue.</div>
         <div class="video-container">
-            <h2>Your Uploaded Videos:</h2>
-            <!-- Uploaded videos will appear here -->
+            <iframe 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/p3NXd3DhH08" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
         </div>
-    </div>
-
-    <div id="add-video-modal">
-        <h2>Add Your Video</h2>
-        <form id="video-form">
-            <label for="video-file">Choose a file:</label>
-            <input type="file" id="video-file" accept="video/*"><br><br>
-            <button type="button" id="confirm-add-btn" class="green-button">Add</button>
-            <button type="button" id="exit-add-btn">Exit</button>
-        </form>
-        <div id="message"></div>
     </div>
 
     <script>
-        // Show add video modal
-        document.getElementById('add-video-btn').addEventListener('click', function() {
-            document.getElementById('add-video-modal').style.display = 'block';
-        });
+        // Function to update the welcome message
+        function updateWelcomeMessage() {
+            const messageElement = document.getElementById('welcome-message');
+            const username = localStorage.getItem('coolkidzUsername');
 
-        // Exit button for modal
-        document.getElementById('exit-add-btn').addEventListener('click', function() {
-            document.getElementById('add-video-modal').style.display = 'none';
-        });
-
-        // Handle video upload
-        document.getElementById('confirm-add-btn').addEventListener('click', function() {
-            const videoFileInput = document.getElementById('video-file');
-            const message = document.getElementById('message');
-            const videoContainer = document.querySelector('.video-container');
-
-            // Check if a video file is selected
-            if (videoFileInput.files.length > 0) {
-                const videoFile = videoFileInput.files[0];
-
-                // Create a new video element
-                const videoElement = document.createElement('video');
-                videoElement.controls = true; // Enable controls (play, pause, etc.)
-                videoElement.width = 560; // Set width
-                videoElement.height = 315; // Set height
-
-                // Create a URL for the video file and set it as the source
-                const videoURL = URL.createObjectURL(videoFile);
-                videoElement.src = videoURL;
-
-                // Append the new video element to the container
-                videoContainer.appendChild(videoElement);
-
-                // Show confirmation message
-                message.textContent = 'Video uploaded successfully!';
-                message.style.color = 'green'; // Green text for success
+            if (username) {
+                messageElement.textContent = `Welcome back, ${username}!`;
+                messageElement.style.color = 'green';
+                document.getElementById('sign-in-prompt').style.display = 'none'; // Hide sign-in prompt
             } else {
-                message.textContent = 'Please choose a video file.';
-                message.style.color = 'red'; // Red text for error
+                messageElement.textContent = '';
+                document.getElementById('sign-in-prompt').style.display = 'block'; // Show sign-in prompt
             }
-        });
-
-        // Sign out button functionality
-        document.getElementById('sign-out-btn').addEventListener('click', function() {
-            localStorage.removeItem('coolkidzUsername'); // Clear stored username
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration page
-        });
-
-        // Sign in button functionality
-        document.getElementById('sign-in-btn').addEventListener('click', function() {
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration page
-        });
-
-        // Check if user is logged in
-        const username = localStorage.getItem('coolkidzUsername');
-        if (username) {
-            document.querySelector('.container h2').textContent = `Hello ${username}! Welcome back!`; // Update welcome message
-        } else {
-            document.querySelector('.container h2').textContent = 'Welcome to CoolKidZ!';
         }
+
+        // Call the function to check for user and update the message on page load
+        window.onload = function() {
+            updateWelcomeMessage();
+        };
+
+        // Sign out function
+        document.getElementById('sign-out-btn').addEventListener('click', function() {
+            localStorage.removeItem('coolkidzUsername'); // Remove the stored username
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration
+        });
     </script>
 </body>
 </html>
