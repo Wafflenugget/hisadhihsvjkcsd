@@ -6,88 +6,63 @@
     <title>CoolKidZ Homepage</title>
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXJ0fGVufDB8fDB8fHww');
-            background-size: cover;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            color: white;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
         }
 
         header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-
-        #welcome-message {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: green;
-            font-size: 24px;
-            z-index: 1000;
-        }
-
-        h1 {
-            margin: 20px 0;
-        }
-
-        button {
+            display: flex;
+            justify-content: space-between;
             padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #28a745;
+            background-color: #4CAF50; /* Header color */
             color: white;
-            cursor: pointer;
-            margin: 0 5px;
-            transition: background-color 0.3s;
         }
 
-        button:hover {
-            background-color: #218838;
-        }
-
-        #sign-in-prompt {
-            font-size: 18px;
-            margin-top: 10px;
+        .container {
+            padding: 20px;
         }
 
         .video-container {
-            margin-top: 30px;
+            margin-top: 20px;
+        }
+
+        iframe {
+            margin: 10px 0;
+            max-width: 100%;
         }
 
         .green-button {
-            background-color: #28a745;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #welcome-message {
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <header>
         <h1>CoolKidZ</h1>
-        <button id="sign-out-btn">Sign Out</button>
-        <button id="add-video-btn" class="green-button">Add Video</button>
+        <div>
+            <button id="sign-in-btn" class="green-button">Sign In</button>
+            <button id="sign-out-btn" class="green-button">Sign Out</button>
+            <button id="add-video-btn" class="green-button">Add Video</button>
+        </div>
     </header>
-    
+
     <div class="container">
         <div id="welcome-message"></div>
         <div id="sign-in-prompt">Please sign in to continue.</div>
-        <div class="video-container">
-            <iframe 
-                width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/p3NXd3DhH08" 
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
+        <div class="video-container" id="video-container">
+            <h2>Videos:</h2>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <!-- Display user-submitted videos here -->
         </div>
     </div>
 
@@ -100,21 +75,57 @@
             if (username) {
                 messageElement.textContent = `Welcome back, ${username}!`;
                 document.getElementById('sign-in-prompt').style.display = 'none'; // Hide sign-in prompt
+                document.getElementById('sign-in-btn').style.display = 'none'; // Hide sign-in button
             } else {
                 messageElement.textContent = '';
                 document.getElementById('sign-in-prompt').style.display = 'block'; // Show sign-in prompt
+                document.getElementById('sign-in-btn').style.display = 'block'; // Show sign-in button
             }
         }
 
         // Call the function to check for user and update the message on page load
         window.onload = function() {
             updateWelcomeMessage();
+            displayVideos();
         };
+
+        // Function to display videos from localStorage
+        function displayVideos() {
+            const videoContainer = document.getElementById('video-container');
+            const videos = JSON.parse(localStorage.getItem('coolKidZVideos')) || [];
+
+            videos.forEach(videoUrl => {
+                const videoId = videoUrl.split('v=')[1].split('&')[0]; // Extract video ID from URL
+                const iframe = document.createElement('iframe');
+                iframe.width = "560";
+                iframe.height = "315";
+                iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                iframe.frameBorder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+
+                videoContainer.appendChild(iframe);
+            });
+        }
 
         // Sign out function
         document.getElementById('sign-out-btn').addEventListener('click', function() {
             localStorage.removeItem('coolkidzUsername'); // Remove the stored username
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration
+        });
+
+        // Add video function
+        document.getElementById('add-video-btn').addEventListener('click', function() {
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Add-Video/'; // Redirect to the Add Video page
+        });
+
+        // Sign in button functionality (for demonstration purposes)
+        document.getElementById('sign-in-btn').addEventListener('click', function() {
+            const username = prompt("Enter your username:");
+            if (username) {
+                localStorage.setItem('coolkidzUsername', username);
+                updateWelcomeMessage(); // Update welcome message
+            }
         });
     </script>
 </body>
