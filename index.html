@@ -14,13 +14,14 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            position: relative;
+            color: white; /* Make text white */
         }
 
         header {
             position: absolute;
             top: 20px;
             left: 20px;
-            color: white;
         }
 
         h1 {
@@ -29,7 +30,6 @@
 
         .video-container {
             text-align: center;
-            color: white;
         }
 
         button {
@@ -68,6 +68,7 @@
 <body>
     <header>
         <h1>CoolKidZ</h1>
+        <div id="greeting"></div> <!-- Greeting message will be inserted here -->
         <button id="sign-out-btn">Sign Out</button>
         <button id="add-video-btn" class="green-button">Add Video</button>
     </header>
@@ -96,6 +97,14 @@
     </div>
 
     <script>
+        // Check if user is signed in and display greeting
+        const username = localStorage.getItem('coolkidzUsername');
+        if (username) {
+            document.getElementById('greeting').textContent = `Hello ${username}!`;
+        } else {
+            document.getElementById('greeting').textContent = 'Please sign in!';
+        }
+
         // Show the modal when 'Add Video' button is clicked
         document.getElementById('add-video-btn').addEventListener('click', function() {
             document.getElementById('add-video-modal').style.display = 'block';
@@ -125,12 +134,6 @@
                 message.style.color = 'red';
             }
         });
-
-        // Check if user is signed in and display greeting
-        const username = localStorage.getItem('coolkidzUsername');
-        if (username) {
-            document.querySelector('header').insertAdjacentHTML('beforeend', `<div id="greeting">Hello ${username}!</div>`);
-        }
     </script>
 </body>
 </html>
