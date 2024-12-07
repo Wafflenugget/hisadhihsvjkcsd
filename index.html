@@ -26,6 +26,15 @@
             z-index: 1000;
         }
 
+        #welcome-message {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: green;
+            font-size: 24px;
+            z-index: 1000;
+        }
+
         h1 {
             margin: 20px 0;
         }
@@ -43,11 +52,6 @@
 
         button:hover {
             background-color: #218838;
-        }
-
-        #welcome-message {
-            font-size: 24px;
-            margin-top: 50px;
         }
 
         #sign-in-prompt {
@@ -95,7 +99,6 @@
 
             if (username) {
                 messageElement.textContent = `Welcome back, ${username}!`;
-                messageElement.style.color = 'green';
                 document.getElementById('sign-in-prompt').style.display = 'none'; // Hide sign-in prompt
             } else {
                 messageElement.textContent = '';
