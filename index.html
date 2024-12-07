@@ -55,8 +55,10 @@
             margin-top: 20px;
         }
 
-        .video {
-            margin: 10px 0;
+        #video-preview {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -76,88 +78,90 @@
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <p>Skateboard Video</p>
             </div>
+            <div id="user-video-preview"></div> <!-- Preview for user's video -->
         </div>
     </div>
 
-    <script>
-        // Simulated user data (for demonstration purposes)
-        const users = [
-            { username: 'user1', password: 'password1' },
-            { username: 'user2', password: 'password2' },
-            { username: 'user3', password: 'password3' }
-        ];
+    <div id="video-preview">
+        <h2>Your Video Preview:</h2>
+        <iframe id="user-video-iframe" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <p id="post-link"></p>
+        <button id="confirm-post-btn">Post Video</button>
+        <button id="cancel-post-btn">No, Thanks</button>
+    </div>
 
-        const logInBtn = document.getElementById('log-in-btn');
+    <script>
+        const signInBtn = document.getElementById('log-in-btn');
         const signOutBtn = document.getElementById('sign-out-btn');
         const addVideoBtn = document.getElementById('add-video-btn');
         const welcomeMessage = document.getElementById('welcome-message');
+        const userVideoPreview = document.getElementById('user-video-preview');
+        const videoPreview = document.getElementById('video-preview');
+        const userVideoIframe = document.getElementById('user-video-iframe');
+
+        const userVideos = []; // Array to hold user videos for demonstration
 
         function updateUI() {
             const username = localStorage.getItem('coolkidzUsername');
             if (username) {
                 welcomeMessage.textContent = `Welcome back, ${username}!`;
-                logInBtn.style.display = 'none';
+                signInBtn.style.display = 'none';
                 signOutBtn.style.display = 'inline';
                 addVideoBtn.style.display = 'inline';
             } else {
                 welcomeMessage.textContent = 'Please log in';
-                logInBtn.style.display = 'inline';
+                signInBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
                 addVideoBtn.style.display = 'none';
             }
         }
 
-        // Log In button event listener
-        logInBtn.addEventListener('click', () => {
-            // Prompt for username and password
-            const user = prompt("Enter your username:");
-            const password = prompt("Enter your password:");
-
-            // Check if user exists
-            const foundUser = users.find(u => u.username === user && u.password === password);
-
-            if (foundUser) {
-                localStorage.setItem('coolkidzUsername', foundUser.username);
-                updateUI();
-            } else {
-                alert('Invalid credentials. Redirecting to registration page...');
-                window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
-            }
-        });
-
-        // Sign Out button event listener
-        signOutBtn.addEventListener('click', () => {
-            localStorage.removeItem('coolkidzUsername');
-            updateUI();
+        signInBtn.addEventListener('click', () => {
+            // Redirect to registration page
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
-        // Add Video button event listener
-        addVideoBtn.addEventListener('click', () => {
-            // Prompt user for their video URL
-            const videoUrl = prompt("Please enter your video URL:");
-            if (videoUrl) {
-                // Display a preview of their video
-                const videoList = document.getElementById('video-list');
-                const newVideoDiv = document.createElement('div');
-                newVideoDiv.className = 'video';
-                newVideoDiv.innerHTML = `
-                    <iframe width="560" height="315" src="${videoUrl.replace('watch?v=', 'embed/')}" title="User Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <p>Your Video Preview</p>
-                `;
-                videoList.appendChild(newVideoDiv);
+        signOutBtn.addEventListener('click', () => {
+            localStorage.removeItem('coolkidzUsername');
+            updateUI();
+            // Redirect to registration page after signing out
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
+        });
 
-                // Ask if they want to post the video
-                const confirmPost = confirm("Do you want to post this video?");
-                if (confirmPost) {
-                    alert("Your video has been posted!"); // Placeholder for actual posting logic
-                } else {
-                    alert("Very well, taking you back to the homepage.");
-                    // Optionally, refresh or redirect
-                    updateUI();
-                }
+        addVideoBtn.addEventListener('click', () => {
+            // Prompt user for video URL
+            const videoUrl = prompt("Please enter the URL of your video:");
+            if (videoUrl) {
+                userVideoIframe.src = videoUrl; // Set iframe source to user video
+                videoPreview.style.display = 'block'; // Show video preview
             }
         });
+
+        document.getElementById('confirm-post-btn').addEventListener('click', () => {
+            // Create a new video entry
+            const newVideo = {
+                src: userVideoIframe.src,
+                link: generateVideoLink(userVideos.length) // Generate link for this video
+            };
+
+            userVideos.push(newVideo); // Add video to the array
+
+            userVideoPreview.innerHTML = `
+                <iframe width="560" height="315" src="${newVideo.src}" title="User Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <p>Your Video</p>
+                <p>Share your video link: <a href="${newVideo.link}" target="_blank">${newVideo.link}</a></p>
+            `;
+            videoPreview.style.display = 'none'; // Hide preview
+            alert("Your video has been posted! You can view it alongside the skateboard video.");
+        });
+
+        document.getElementById('cancel-post-btn').addEventListener('click', () => {
+            videoPreview.style.display = 'none'; // Hide preview if user cancels
+        });
+
+        function generateVideoLink(videoIndex) {
+            return `https://wafflenugget.github.io/CoolKidZ/user-video-${videoIndex}`;
+        }
 
         updateUI(); // Call this function to update the UI based on local storage
     </script>
