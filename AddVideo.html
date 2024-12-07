@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Video</title>
+    <style>
+        /* Add your styles here */
+    </style>
+</head>
+<body>
+    <h1>Add a Video</h1>
+    <form id="videoForm">
+        <label for="videoUrl">Video URL:</label>
+        <input type="url" id="videoUrl" required placeholder="Enter YouTube video URL">
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.getElementById('videoForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const videoUrl = document.getElementById('videoUrl').value;
+            const videoList = JSON.parse(localStorage.getItem('coolKidZVideos')) || [];
+            videoList.push(videoUrl);
+            localStorage.setItem('coolKidZVideos', JSON.stringify(videoList));
+
+            // Redirect back to the homepage
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ/';
+        });
+    </script>
+</body>
+</html>
