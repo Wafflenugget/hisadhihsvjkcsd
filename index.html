@@ -148,6 +148,8 @@
                 // Store username in local storage upon successful login
                 localStorage.setItem('coolkidzUsername', foundUser.username);
                 updateUI(); // Update UI after logging in
+                // Redirect to the registration page
+                window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
             } else {
                 alert("Invalid username or password. Please try again.");
             }
@@ -169,17 +171,28 @@
         });
 
         addVideoBtn.addEventListener('click', () => {
-            // Prompt user to upload a video file or enter a YouTube link
-            const videoFile = prompt("Please enter the path to your video file (or a YouTube link):");
-            if (videoFile) {
-                userVideoIframe.src = videoFile; // Set iframe source to user video
-                videoPreview.style.display = 'block'; // Show video preview
+            // Create an input element for file selection
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'video/*'; // Only accept video files
 
-                // Generate a unique link for sharing
-                const uniqueLink = `https://coolkidz.com/user/video/${localStorage.getItem('coolkidzUsername')}-${Date.now()}`;
-                linkContainer.innerHTML = `Your video link: <a href="${uniqueLink}" target="_blank">${uniqueLink}</a>`;
-                linkContainer.style.display = 'block';
-            }
+            fileInput.onchange = () => {
+                const file = fileInput.files[0]; // Get the selected file
+                if (file) {
+                    const fileUrl = URL.createObjectURL(file); // Create a URL for the file
+                    userVideoIframe.src = fileUrl; // Set iframe source to user video
+                    videoPreview.style.display = 'block'; // Show video preview
+
+                    // Generate a unique link for sharing
+                    const uniqueLink = `https://coolkidz.com/user/video/${localStorage.getItem('coolkidzUsername')}-${Date.now()}`;
+                    linkContainer.innerHTML = `Your video link: <a href="${uniqueLink}" target="_blank">${uniqueLink}</a>`;
+                    linkContainer.style.display = 'block';
+                } else {
+                    alert("Invalid video. Please select a valid video file.");
+                }
+            };
+
+            fileInput.click(); // Trigger file input click
         });
 
         document.getElementById('copy-link-btn').addEventListener('click', () => {
