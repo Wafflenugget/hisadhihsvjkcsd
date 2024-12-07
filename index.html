@@ -32,12 +32,6 @@
             left: 10px;
         }
 
-        #prompt-message {
-            color: yellow; /* Different color for the prompt */
-            margin-top: 50px; /* Space below the welcome message */
-            font-size: 1.2em; /* Slightly larger font */
-        }
-
         button {
             padding: 10px;
             border: none;
@@ -54,7 +48,7 @@
 
         .container {
             text-align: center;
-            margin-top: 20px; /* Adjusted margin to position below welcome message */
+            margin-top: 100px; /* Adjusted margin to position below welcome message */
         }
 
         .video-container {
@@ -82,7 +76,6 @@
     </header>
     <div class="container">
         <h1>CoolKidZ</h1>
-        <div id="prompt-message">Please sign in if you have an account.</div> <!-- Prompt message -->
         <div class="video-container" id="video-list">
             <p>Videos:</p>
             <div class="video">
@@ -111,7 +104,6 @@
         const addVideoBtn = document.getElementById('add-video-btn');
         const welcomeMessage = document.getElementById('welcome-message');
         const usernameDisplay = document.getElementById('username-display');
-        const promptMessage = document.getElementById('prompt-message'); // Prompt message
         const addVideoContainer = document.getElementById('add-video-container');
         const chooseFileBtn = document.getElementById('choose-file-btn');
         const fileInput = document.getElementById('file-input');
@@ -129,14 +121,12 @@
                 signOutBtn.style.display = 'inline';
                 addVideoBtn.style.display = 'inline';
                 addVideoContainer.style.display = 'block'; // Show add video container
-                promptMessage.style.display = 'none'; // Hide prompt message
             } else {
                 usernameDisplay.textContent = '';
                 signInBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
                 addVideoBtn.style.display = 'none';
                 addVideoContainer.style.display = 'none'; // Hide add video container
-                promptMessage.style.display = 'block'; // Show prompt message
             }
         }
 
