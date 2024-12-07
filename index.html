@@ -11,81 +11,72 @@
             background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXJ0fGVufDB8fDB8fHww');
             background-size: cover;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+            justify-content: flex-start; /* Align items to the left */
             height: 100vh;
-            position: relative;
-            color: white; /* Make text white */
+            padding: 20px; /* Add some padding */
+            color: white; /* Set text color to white */
         }
-
+        
         header {
-            position: absolute;
-            top: 20px;
-            right: 20px; /* Position buttons on the top right */
-            text-align: right; /* Align buttons to the right */
+            position: absolute; /* Position the header */
+            top: 20px; /* Distance from top */
+            left: 20px; /* Distance from left */
         }
 
-        h1 {
-            margin-bottom: 20px;
-            text-align: center; /* Center align the title */
+        #sign-out-btn, #add-video-btn, #sign-in-btn {
+            margin-left: 10px; /* Space between buttons */
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 80px; /* Space below the header */
         }
 
         .video-container {
-            text-align: center;
-        }
-
-        button {
-            padding: 10px;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #28a745;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #218838;
+            margin: 20px; /* Margin around the video */
         }
 
         #add-video-modal {
-            display: none; /* Hidden by default */
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            display: none; /* Hide modal by default */
         }
 
-        #message {
-            margin-top: 15px;
-            color: yellow; /* Color for success/error messages */
+        .green-button {
+            background-color: #28a745; /* Green button */
+            color: white; /* White text */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px 15px; /* Padding */
+            cursor: pointer; /* Pointer cursor */
+        }
+
+        .green-button:hover {
+            background-color: #218838; /* Darker green on hover */
         }
     </style>
 </head>
 <body>
     <header>
         <h1>CoolKidZ</h1>
-        <div id="greeting"></div> <!-- Greeting message will be inserted here -->
-        <button id="sign-out-btn">Sign Out</button>
-        <button id="add-video-btn" class="green-button">Add Video</button>
+        <div>
+            <button id="sign-in-btn" class="green-button">Sign In</button>
+            <button id="sign-out-btn" class="green-button">Sign Out</button>
+            <button id="add-video-btn" class="green-button">Add Video</button>
+        </div>
+        <p>Please Sign In</p>
     </header>
-
-    <div class="video-container">
-        <iframe 
-            width="560" 
-            height="315" 
-            src="https://www.youtube.com/embed/p3NXd3DhH08" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-        <div id="message"></div>
+    <div class="container">
+        <div class="video-container">
+            <iframe 
+                width="560" 
+                height="315" 
+                src="https://www.youtube.com/embed/p3NXd3DhH08" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
     </div>
 
     <div id="add-video-modal">
@@ -99,42 +90,41 @@
     </div>
 
     <script>
-        // Check if user is signed in and display greeting
+        // Show a greeting message
         const username = localStorage.getItem('coolkidzUsername');
         if (username) {
-            document.getElementById('greeting').textContent = `Hello ${username}!`;
-        } else {
-            document.getElementById('greeting').textContent = 'Please sign in!';
+            const welcomeMessage = document.createElement('h2');
+            welcomeMessage.textContent = `Welcome back, ${username}!`;
+            document.body.insertBefore(welcomeMessage, document.querySelector('.container'));
         }
 
-        // Show the modal when 'Add Video' button is clicked
-        document.getElementById('add-video-btn').addEventListener('click', function() {
-            document.getElementById('add-video-modal').style.display = 'block';
-        });
-
-        // Exit the modal when 'Exit' button is clicked
-        document.getElementById('exit-add-btn').addEventListener('click', function() {
-            document.getElementById('add-video-modal').style.display = 'none';
-        });
-
-        // Sign out button functionality
+        // Sign out functionality
         document.getElementById('sign-out-btn').addEventListener('click', function() {
-            localStorage.removeItem('coolkidzUsername'); // Clear stored username
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration
+            localStorage.removeItem('coolkidzUsername'); // Remove username from local storage
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration page
         });
 
-        // Confirm adding video (for demonstration purposes)
+        // Add video functionality
+        document.getElementById('add-video-btn').addEventListener('click', function() {
+            const modal = document.getElementById('add-video-modal');
+            modal.style.display = 'block'; // Show the modal
+        });
+
+        // Handle add video confirmation
         document.getElementById('confirm-add-btn').addEventListener('click', function() {
             const videoFile = document.getElementById('video-file').files[0];
-            const message = document.getElementById('message');
-            if (videoFile) {
-                message.textContent = `Added video: ${videoFile.name}`;
-                message.style.color = 'green';
-                document.getElementById('add-video-modal').style.display = 'none'; // Close modal
+            if (!videoFile) {
+                alert('Please choose a video file!'); // Alert if no file is chosen
             } else {
-                message.textContent = 'Please choose a video file.';
-                message.style.color = 'red';
+                // Add your video upload logic here
+                alert('Video added successfully!'); // Example success message
+                document.getElementById('add-video-modal').style.display = 'none'; // Hide the modal
             }
+        });
+
+        // Exit from add video modal
+        document.getElementById('exit-add-btn').addEventListener('click', function() {
+            document.getElementById('add-video-modal').style.display = 'none'; // Hide the modal
         });
     </script>
 </body>
