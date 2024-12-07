@@ -50,7 +50,7 @@
     <header>
         <h1>CoolKidZ</h1>
         <div>
-            <button id="sign-in-btn" class="green-button">Sign In</button>
+            <button id="log-in-btn" class="green-button">Log In</button>
             <button id="sign-out-btn" class="green-button">Sign Out</button>
             <button id="add-video-btn" class="green-button">Add Video</button>
         </div>
@@ -75,11 +75,11 @@
             if (username) {
                 messageElement.textContent = `Welcome back, ${username}!`;
                 document.getElementById('sign-in-prompt').style.display = 'none'; // Hide sign-in prompt
-                document.getElementById('sign-in-btn').style.display = 'none'; // Hide sign-in button
+                document.getElementById('log-in-btn').style.display = 'none'; // Hide log-in button
             } else {
                 messageElement.textContent = '';
                 document.getElementById('sign-in-prompt').style.display = 'block'; // Show sign-in prompt
-                document.getElementById('sign-in-btn').style.display = 'block'; // Show sign-in button
+                document.getElementById('log-in-btn').style.display = 'block'; // Show log-in button
             }
         }
 
@@ -119,12 +119,14 @@
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Add-Video/'; // Redirect to the Add Video page
         });
 
-        // Sign in button functionality (for demonstration purposes)
-        document.getElementById('sign-in-btn').addEventListener('click', function() {
+        // Log In button functionality
+        document.getElementById('log-in-btn').addEventListener('click', function() {
             const username = prompt("Enter your username:");
             if (username) {
                 localStorage.setItem('coolkidzUsername', username);
                 updateWelcomeMessage(); // Update welcome message
+            } else {
+                alert("Please enter a valid username.");
             }
         });
     </script>
