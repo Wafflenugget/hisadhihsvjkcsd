@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoolKidZ</title>
+    <title>CoolKidZ Homepage</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
         }
 
         .header {
-            background-color: rgba(0, 0, 0, 0.6); /* Transparent black */
+            background-color: rgba(0, 0, 0, 0.6);
             color: white;
             padding: 15px;
             display: flex;
@@ -23,7 +23,7 @@
         }
 
         .nav {
-            background-color: #4CAF50; /* Green box for buttons */
+            background-color: #4CAF50;
             padding: 10px;
             border-radius: 5px;
         }
@@ -31,20 +31,21 @@
         .nav button {
             margin-left: 10px;
             padding: 10px 15px;
-            background-color: white; /* Button background color */
-            color: #4CAF50; /* Button text color */
+            background-color: white;
+            color: #4CAF50;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
         .nav button:hover {
-            background-color: #e0e0e0; /* Light gray on hover */
+            background-color: #e0e0e0;
         }
 
         .welcome-message {
             text-align: center;
             margin: 20px 0;
+            color: white;
         }
 
         .video-section {
@@ -52,17 +53,19 @@
             margin: 20px 0;
         }
 
-        .video-preview {
-            text-align: center;
-            margin: 20px 0;
-        }
-
         .about-us {
             text-align: center;
             margin: 20px;
-            padding: 10px;
+            padding: 20px;
             background-color: white;
             border-radius: 5px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-us p {
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -83,29 +86,33 @@
     <div class="video-section">
         <h3>Videos:</h3>
         <iframe id="userVideoIframe" width="560" height="315" style="display: none;" frameborder="0" allowfullscreen></iframe>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" frameborder="0" allowfullscreen></iframe> <!-- Skateboard video -->
-    </div>
-
-    <div id="videoPreview" class="video-preview" style="display: none;">
-        <h3>Your Video Preview:</h3>
-        <iframe id="userVideo" width="560" height="315" frameborder="0" allowfullscreen></iframe>
-        <button id="copyLinkBtn">Copy Link</button>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" frameborder="0" allowfullscreen></iframe>
     </div>
 
     <div class="about-us">
         <h3>About Us</h3>
-        <p>At CoolKidZ, we believe in sharing talents so everyone shines in their own way. Everyone is unique, and we celebrate that!</p>
+        <p>Welcome to CoolKidZ, where creativity has no limits! We provide a space for kids to share their unique talents and interests. Whether it's music, sports, or anything else, this is the place to express yourself.</p>
+        <p>Our platform encourages everyone to shine in their own way, without judgment. Here, everyone has the chance to show what makes them special, no matter their background or skill level.</p>
+        <p>We believe that every child deserves a safe environment to explore their passions and connect with like-minded individuals. With video sharing and creative content, we make it easy to be part of a fun, vibrant community.</p>
+        <p>CoolKidZ is not just about sharing videos—it's about sharing experiences, learning, and growing together. It's about building confidence and supporting each other every step of the way.</p>
+        <p>Join us on this exciting adventure of discovery and creativity! Let's make the world a little brighter, one talent at a time.</p>
     </div>
 
     <script>
-        // Simulating a logged-in user
-        const username = "User"; // Replace with actual username from login
-        document.getElementById("username").textContent = username;
-        document.getElementById("welcomeMessage").style.display = "block"; // Show welcome message
+        // Get username from localStorage
+        const username = localStorage.getItem("username");
+        if (username) {
+            document.getElementById("username").textContent = username;
+            document.getElementById("welcomeMessage").style.display = "block"; // Show welcome message
+        } else {
+            // If no username found, redirect to registration page
+            window.location.href = "index.html";
+        }
 
         // Log Out button functionality
         document.getElementById("logoutBtn").addEventListener("click", () => {
-            window.location.href = "https://wafflenugget.github.io/CoolKidZ-Registration/";
+            localStorage.removeItem("username"); // Clear username from localStorage
+            window.location.href = "index.html"; // Redirect to registration page
         });
 
         // Add Video button functionality
@@ -116,8 +123,6 @@
                 if (videoUrl) {
                     document.getElementById("userVideoIframe").src = videoUrl;
                     document.getElementById("userVideoIframe").style.display = 'block';
-                    document.getElementById("videoPreview").style.display = 'block';
-                    document.getElementById("userVideo").src = videoUrl;
                 }
             } else if (videoType === "file") {
                 const fileInput = document.createElement("input");
@@ -127,8 +132,8 @@
                     const file = event.target.files[0];
                     if (file) {
                         const fileURL = URL.createObjectURL(file);
-                        document.getElementById("userVideo").src = fileURL;
-                        document.getElementById("videoPreview").style.display = 'block';
+                        document.getElementById("userVideoIframe").src = fileURL;
+                        document.getElementById("userVideoIframe").style.display = 'block';
                     }
                 };
                 fileInput.click();
@@ -137,18 +142,9 @@
             }
         });
 
-        // Copy Link button functionality
-        document.getElementById("copyLinkBtn").addEventListener("click", () => {
-            const videoUrl = document.getElementById("userVideo").src;
-            navigator.clipboard.writeText(videoUrl).then(() => {
-                alert("Video link copied to clipboard!");
-                window.location.href = "https://wafflenugget.github.io/CoolKidZ/";
-            });
-        });
-
         // Sign Up button functionality
         document.getElementById("signupBtn").addEventListener("click", () => {
-            window.location.href = "https://wafflenugget.github.io/CoolKidZ-Registration/";
+            window.location.href = "index.html"; // Redirect to registration page
         });
     </script>
 </body>
