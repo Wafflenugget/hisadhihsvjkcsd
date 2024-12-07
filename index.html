@@ -62,9 +62,9 @@
 </head>
 <body>
     <header>
-        <div id="welcome-message">Please sign in</div>
+        <div id="welcome-message">Please log in</div>
         <div>
-            <button id="sign-in-btn">Sign In</button>
+            <button id="log-in-btn">Log In</button>
             <button id="sign-out-btn" style="display: none;">Sign Out</button>
             <button id="add-video-btn" style="display: none;">Add Video</button>
         </div>
@@ -80,8 +80,14 @@
     </div>
 
     <script>
-        const signInBtn = document.getElementById('sign-in-btn');
-         const logInBtn = document.getElementById('log-in-btn');
+        // Simulated user data (for demonstration purposes)
+        const users = [
+            { username: 'user1', password: 'password1' },
+            { username: 'user2', password: 'password2' },
+            { username: 'user3', password: 'password3' }
+        ];
+
+        const logInBtn = document.getElementById('log-in-btn');
         const signOutBtn = document.getElementById('sign-out-btn');
         const addVideoBtn = document.getElementById('add-video-btn');
         const welcomeMessage = document.getElementById('welcome-message');
@@ -90,40 +96,67 @@
             const username = localStorage.getItem('coolkidzUsername');
             if (username) {
                 welcomeMessage.textContent = `Welcome back, ${username}!`;
-                signInBtn.style.display = 'none';
+                logInBtn.style.display = 'none';
                 signOutBtn.style.display = 'inline';
                 addVideoBtn.style.display = 'inline';
             } else {
-                welcomeMessage.textContent = 'Please sign in';
-                signInBtn.style.display = 'inline';
+                welcomeMessage.textContent = 'Please log in';
                 logInBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
                 addVideoBtn.style.display = 'none';
             }
         }
 
+        // Log In button event listener
         logInBtn.addEventListener('click', () => {
-            // Redirect to registration page and ask for user credentials
-            const user = prompt("Please enter your username:");
-            const password = prompt("Please enter your password:");
-            if (user && password) {
-                // Store username for demonstration
-                localStorage.setItem('coolkidzUsername', user); // This is just for demonstration
-                updateUI(); // Update UI after logging in
+            // Prompt for username and password
+            const user = prompt("Enter your username:");
+            const password = prompt("Enter your password:");
+
+            // Check if user exists
+            const foundUser = users.find(u => u.username === user && u.password === password);
+
+            if (foundUser) {
+                localStorage.setItem('coolkidzUsername', foundUser.username);
+                updateUI();
+            } else {
+                alert('Invalid credentials. Redirecting to registration page...');
+                window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
             }
-            // Redirect to the registration page
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
+        // Sign Out button event listener
         signOutBtn.addEventListener('click', () => {
             localStorage.removeItem('coolkidzUsername');
             updateUI();
-            // Redirect to the registration page after signing out
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
+        // Add Video button event listener
         addVideoBtn.addEventListener('click', () => {
-            window.location.href = 'add-video.html'; // Redirect to add video page
+            // Prompt user for their video URL
+            const videoUrl = prompt("Please enter your video URL:");
+            if (videoUrl) {
+                // Display a preview of their video
+                const videoList = document.getElementById('video-list');
+                const newVideoDiv = document.createElement('div');
+                newVideoDiv.className = 'video';
+                newVideoDiv.innerHTML = `
+                    <iframe width="560" height="315" src="${videoUrl.replace('watch?v=', 'embed/')}" title="User Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <p>Your Video Preview</p>
+                `;
+                videoList.appendChild(newVideoDiv);
+
+                // Ask if they want to post the video
+                const confirmPost = confirm("Do you want to post this video?");
+                if (confirmPost) {
+                    alert("Your video has been posted!"); // Placeholder for actual posting logic
+                } else {
+                    alert("Very well, taking you back to the homepage.");
+                    // Optionally, refresh or redirect
+                    updateUI();
+                }
+            }
         });
 
         updateUI(); // Call this function to update the UI based on local storage
