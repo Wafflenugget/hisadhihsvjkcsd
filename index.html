@@ -11,12 +11,10 @@
             background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-           
-           
         }
 
         .header {
-            background-color: #4CAF50;
+            background-color: rgba(0, 0, 0, 0.6); /* Transparent black */
             color: white;
             padding: 15px;
             display: flex;
@@ -24,8 +22,24 @@
             align-items: center;
         }
 
+        .nav {
+            background-color: #4CAF50; /* Green box for buttons */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
         .nav button {
             margin-left: 10px;
+            padding: 10px 15px;
+            background-color: white; /* Button background color */
+            color: #4CAF50; /* Button text color */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .nav button:hover {
+            background-color: #e0e0e0; /* Light gray on hover */
         }
 
         .welcome-message {
@@ -69,7 +83,7 @@
     <div class="video-section">
         <h3>Videos:</h3>
         <iframe id="userVideoIframe" width="560" height="315" style="display: none;" frameborder="0" allowfullscreen></iframe>
-        <iframe width="560" height="315" src="https://www.youtube.com/watch?v=p3NXd3DhH08&t=11s" frameborder="0" allowfullscreen></iframe> <!-- Skateboard video -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" frameborder="0" allowfullscreen></iframe> <!-- Skateboard video -->
     </div>
 
     <div id="videoPreview" class="video-preview" style="display: none;">
@@ -87,7 +101,7 @@
         // Simulating a logged-in user
         const username = "User"; // Replace with actual username from login
         document.getElementById("username").textContent = username;
-        document.getElementById("welcomeMessage").style.display = "block";
+        document.getElementById("welcomeMessage").style.display = "block"; // Show welcome message
 
         // Log Out button functionality
         document.getElementById("logoutBtn").addEventListener("click", () => {
