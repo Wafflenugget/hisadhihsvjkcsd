@@ -12,7 +12,7 @@
             background-size: cover;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             height: 100vh;
             color: white;
             padding: 20px;
@@ -22,24 +22,26 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 10px;
-            position: relative;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 0;
         }
 
         #welcome-message {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+            font-size: 18px;
         }
 
         button {
-            padding: 10px;
+            padding: 10px 15px;
             border: none;
             border-radius: 5px;
             background-color: #28a745;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin: 0 5px; /* Add margin for spacing */
         }
 
         button:hover {
@@ -48,7 +50,7 @@
 
         .container {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 80px; /* Space below header */
         }
 
         .video-container {
@@ -62,26 +64,35 @@
         #video-preview {
             display: none;
             margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
         }
 
         #link-container {
             display: none;
             margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <header>
-        <div id="welcome-message">Please log in</div>
+        <div id="welcome-message"></div>
         <div>
             <button id="log-in-btn">Log In</button>
+            <button id="sign-up-btn">Sign Up</button>
             <button id="sign-out-btn" style="display: none;">Sign Out</button>
             <button id="add-video-btn" style="display: none;">Add Video</button>
         </div>
     </header>
     <div class="container">
         <h1>CoolKidZ</h1>
+        <h2>Please log in or sign up</h2>
         <div class="video-container" id="video-list">
+            <h3>Videos:</h3>
             <div class="video">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <p>Skateboard Video</p>
@@ -98,6 +109,7 @@
 
     <script>
         const logInBtn = document.getElementById('log-in-btn');
+        const signUpBtn = document.getElementById('sign-up-btn');
         const signOutBtn = document.getElementById('sign-out-btn');
         const addVideoBtn = document.getElementById('add-video-btn');
         const welcomeMessage = document.getElementById('welcome-message');
@@ -106,22 +118,20 @@
         const linkContainer = document.getElementById('link-container');
 
         // Simulated user data (for demonstration purposes)
-        const users = [
-            { username: 'user1', password: 'password1' },
-            { username: 'user2', password: 'password2' },
-            { username: 'user3', password: 'password3' }
-        ];
+        const users = [];
 
         function updateUI() {
             const username = localStorage.getItem('coolkidzUsername');
             if (username) {
                 welcomeMessage.textContent = `Welcome back, ${username}!`;
                 logInBtn.style.display = 'none';
+                signUpBtn.style.display = 'none';
                 signOutBtn.style.display = 'inline';
                 addVideoBtn.style.display = 'inline';
             } else {
-                welcomeMessage.textContent = 'Please log in';
+                welcomeMessage.textContent = 'Please log in or sign up';
                 logInBtn.style.display = 'inline';
+                signUpBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
                 addVideoBtn.style.display = 'none';
             }
@@ -143,6 +153,14 @@
             }
         });
 
+        signUpBtn.addEventListener('click', () => {
+            const newUser = prompt("Enter a new username:");
+            const newPassword = prompt("Enter a new password:");
+            // Add new user to the simulated database
+            users.push({ username: newUser, password: newPassword });
+            alert("Account created successfully! Please log in.");
+        });
+
         signOutBtn.addEventListener('click', () => {
             localStorage.removeItem('coolkidzUsername');
             updateUI();
@@ -151,7 +169,7 @@
         });
 
         addVideoBtn.addEventListener('click', () => {
-            // Prompt user to upload a video file
+            // Prompt user to upload a video file or enter a YouTube link
             const videoFile = prompt("Please enter the path to your video file (or a YouTube link):");
             if (videoFile) {
                 userVideoIframe.src = videoFile; // Set iframe source to user video
