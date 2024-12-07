@@ -1,41 +1,88 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CoolKidZ homepage</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoolKidZ Homepage</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXJ0fGVufDB8fDB8fHww');
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            text-align: center;
+            color: white;
+        }
+
+        button {
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #add-video-modal {
+            display: none; /* Hidden by default */
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #message {
+            margin-top: 15px;
+            color: yellow; /* Color for success/error messages */
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>CoolKidZ</h1>
-        <div>
-            <button id="sign-out-btn">Sign Out</button>
-            <button id="add-video-btn" class="green-button">Add Video</button>
-        </div>
+        <button id="sign-out-btn">Sign Out</button>
+        <button id="add-video-btn" class="green-button">Add Video</button>
     </header>
-    <div class="container">
-        <div class="video-container">
-            <iframe 
-                width="560" 
-                height="315" 
-                src="https://www.youtube.com/embed/p3NXd3DhH08" 
-                title="YouTube video player" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-        </div>
+
+    <div class="video-container">
+        <iframe 
+            width="560" 
+            height="315" 
+            src="https://www.youtube.com/embed/p3NXd3DhH08" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+        <div id="message"></div>
     </div>
 
     <div id="add-video-modal">
@@ -48,11 +95,42 @@
         </form>
     </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
+    <script>
+        // Show the modal when 'Add Video' button is clicked
+        document.getElementById('add-video-btn').addEventListener('click', function() {
+            document.getElementById('add-video-modal').style.display = 'block';
+        });
 
+        // Exit the modal when 'Exit' button is clicked
+        document.getElementById('exit-add-btn').addEventListener('click', function() {
+            document.getElementById('add-video-modal').style.display = 'none';
+        });
+
+        // Sign out button functionality
+        document.getElementById('sign-out-btn').addEventListener('click', function() {
+            localStorage.removeItem('coolkidzUsername'); // Clear stored username
+            window.location.href = 'https://codepen.io/KIDS-LEARNING-FOR-EVRYONE/pen/KwPVaQg'; // Redirect to registration
+        });
+
+        // Confirm adding video (for demonstration purposes)
+        document.getElementById('confirm-add-btn').addEventListener('click', function() {
+            const videoFile = document.getElementById('video-file').files[0];
+            const message = document.getElementById('message');
+            if (videoFile) {
+                message.textContent = `Added video: ${videoFile.name}`;
+                message.style.color = 'green';
+                document.getElementById('add-video-modal').style.display = 'none'; // Close modal
+            } else {
+                message.textContent = 'Please choose a video file.';
+                message.style.color = 'red';
+            }
+        });
+
+        // Check if user is signed in and display greeting
+        const username = localStorage.getItem('coolkidzUsername');
+        if (username) {
+            document.querySelector('header').insertAdjacentHTML('beforeend', `<div id="greeting">Hello ${username}!</div>`);
+        }
+    </script>
 </body>
 </html>
