@@ -8,13 +8,14 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fHww');
+            background-image: url('https://images.unsplash.com/photo-1563268381-06ddf2b1f46d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGZsb3dlciUyMHNrZXRjaCUyMGJsYWNrJTIwYmFja2dyb3VuZHxlbnwwfHwwfHx8MA%3D%3D');
             background-size: cover;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             height: 100vh;
             color: white;
+            padding: 20px;
         }
 
         header {
@@ -57,23 +58,6 @@
         .video {
             margin: 10px 0;
         }
-
-        #add-video-modal {
-            display: none;
-            background-color: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #add-video-modal input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
     </style>
 </head>
 <body>
@@ -95,22 +79,11 @@
         </div>
     </div>
 
-    <div id="add-video-modal">
-        <h2>Add Your Video</h2>
-        <input type="text" id="video-url" placeholder="Enter YouTube video URL">
-        <button id="confirm-add-btn">Add Video</button>
-        <button id="exit-add-btn">Exit</button>
-    </div>
-
     <script>
         const signInBtn = document.getElementById('sign-in-btn');
+         const logInBtn = document.getElementById('log-in-btn');
         const signOutBtn = document.getElementById('sign-out-btn');
         const addVideoBtn = document.getElementById('add-video-btn');
-        const videoList = document.getElementById('video-list');
-        const addVideoModal = document.getElementById('add-video-modal');
-        const videoUrlInput = document.getElementById('video-url');
-        const exitAddBtn = document.getElementById('exit-add-btn');
-        const confirmAddBtn = document.getElementById('confirm-add-btn');
         const welcomeMessage = document.getElementById('welcome-message');
 
         function updateUI() {
@@ -123,36 +96,34 @@
             } else {
                 welcomeMessage.textContent = 'Please sign in';
                 signInBtn.style.display = 'inline';
+                logInBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
                 addVideoBtn.style.display = 'none';
             }
         }
 
-        signInBtn.addEventListener('click', () => {
+        logInBtn.addEventListener('click', () => {
+            // Redirect to registration page and ask for user credentials
+            const user = prompt("Please enter your username:");
+            const password = prompt("Please enter your password:");
+            if (user && password) {
+                // Store username for demonstration
+                localStorage.setItem('coolkidzUsername', user); // This is just for demonstration
+                updateUI(); // Update UI after logging in
+            }
+            // Redirect to the registration page
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
         signOutBtn.addEventListener('click', () => {
             localStorage.removeItem('coolkidzUsername');
             updateUI();
+            // Redirect to the registration page after signing out
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
         addVideoBtn.addEventListener('click', () => {
-            addVideoModal.style.display = 'block'; // Show the modal when the Add Video button is clicked
-        });
-
-        exitAddBtn.addEventListener('click', () => {
-            addVideoModal.style.display = 'none'; // Hide the modal when the exit button is clicked
-        });
-
-        confirmAddBtn.addEventListener('click', () => {
-            const videoUrl = videoUrlInput.value;
-            if (videoUrl) {
-                const videoHTML = `<div class="video"><iframe width="560" height="315" src="${videoUrl.replace('watch?v=', 'embed/')}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
-                videoList.insertAdjacentHTML('beforeend', videoHTML);
-                videoUrlInput.value = ''; // Clear the input field
-                addVideoModal.style.display = 'none'; // Hide the modal after adding the video
-            }
+            window.location.href = 'add-video.html'; // Redirect to add video page
         });
 
         updateUI(); // Call this function to update the UI based on local storage
