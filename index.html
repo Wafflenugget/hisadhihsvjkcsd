@@ -12,7 +12,7 @@
             background-size: cover;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             height: 100vh;
             color: white;
             padding: 20px;
@@ -24,28 +24,24 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 0;
         }
 
         #welcome-message {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-        }
-
-        #prompt-message {
-            color: yellow; /* Different color for the prompt */
-            margin-top: 50px; /* Space below the welcome message */
-            font-size: 1.2em; /* Slightly larger font */
+            font-size: 18px;
         }
 
         button {
-            padding: 10px;
+            padding: 10px 15px;
             border: none;
             border-radius: 5px;
             background-color: #28a745;
             color: white;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin: 0 5px; /* Add margin for spacing */
         }
 
         button:hover {
@@ -54,7 +50,7 @@
 
         .container {
             text-align: center;
-            margin-top: 20px; /* Adjusted margin to position below welcome message */
+            margin-top: 80px; /* Space below header */
         }
 
         .video-container {
@@ -65,143 +61,150 @@
             margin: 10px 0;
         }
 
-        #add-video-container {
+        #video-preview {
             display: none;
             margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #link-container {
+            display: none;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <header>
-        <div id="welcome-message">Welcome back, <span id="username-display"></span>!</div>
+        <div id="welcome-message"></div>
         <div>
-            <button id="sign-in-btn">Log In</button>
+            <button id="log-in-btn">Log In</button>
+            <button id="sign-up-btn">Sign Up</button>
             <button id="sign-out-btn" style="display: none;">Sign Out</button>
             <button id="add-video-btn" style="display: none;">Add Video</button>
         </div>
     </header>
     <div class="container">
         <h1>CoolKidZ</h1>
-        <div id="prompt-message">Please sign in if you have an account else, sign in.</div> <!-- Prompt message -->
+        <h2>Please log in or sign up</h2>
         <div class="video-container" id="video-list">
-            <p>Videos:</p>
+            <h3>Videos:</h3>
             <div class="video">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <p>Skateboard Video</p>
             </div>
         </div>
-
-        <div id="add-video-container">
-            <h3>Add Your Video</h3>
-            <button id="choose-file-btn">Add File</button>
-            <input type="file" id="file-input" style="display: none;">
-            <input type="text" id="video-url" placeholder="Or enter video URL (YouTube link)">
-            <button id="post-video-btn">Post Video</button>
-            <div id="video-preview" style="display: none;">
-                <h4>Video Preview:</h4>
-                <iframe id="user-video-iframe" width="560" height="315" frameborder="0" allowfullscreen></iframe>
-                <button id="copy-link-btn" style="display: none;">Copy Link</button>
-            </div>
+        <div id="video-preview">
+            <h2>Your Video Preview</h2>
+            <iframe id="user-video-iframe" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p>Your video has been safely posted on CoolKidZ!</p>
+            <button id="copy-link-btn">Copy Link</button>
         </div>
+        <div id="link-container"></div>
     </div>
 
     <script>
-        const signInBtn = document.getElementById('sign-in-btn');
+        const logInBtn = document.getElementById('log-in-btn');
+        const signUpBtn = document.getElementById('sign-up-btn');
         const signOutBtn = document.getElementById('sign-out-btn');
         const addVideoBtn = document.getElementById('add-video-btn');
         const welcomeMessage = document.getElementById('welcome-message');
-        const usernameDisplay = document.getElementById('username-display');
-        const promptMessage = document.getElementById('prompt-message'); // Prompt message
-        const addVideoContainer = document.getElementById('add-video-container');
-        const chooseFileBtn = document.getElementById('choose-file-btn');
-        const fileInput = document.getElementById('file-input');
-        const videoUrlInput = document.getElementById('video-url');
-        const postVideoBtn = document.getElementById('post-video-btn');
         const videoPreview = document.getElementById('video-preview');
         const userVideoIframe = document.getElementById('user-video-iframe');
-        const copyLinkBtn = document.getElementById('copy-link-btn');
+        const linkContainer = document.getElementById('link-container');
+
+        // Simulated user data (for demonstration purposes)
+        const users = [];
 
         function updateUI() {
             const username = localStorage.getItem('coolkidzUsername');
             if (username) {
-                usernameDisplay.textContent = username;
-                signInBtn.style.display = 'none';
+                welcomeMessage.textContent = `Welcome back, ${username}!`;
+                logInBtn.style.display = 'none';
+                signUpBtn.style.display = 'none';
                 signOutBtn.style.display = 'inline';
                 addVideoBtn.style.display = 'inline';
-                addVideoContainer.style.display = 'block'; // Show add video container
-                promptMessage.style.display = 'none'; // Hide prompt message
             } else {
-                usernameDisplay.textContent = '';
-                signInBtn.style.display = 'inline';
+                welcomeMessage.textContent = 'Please log in or sign up';
+                logInBtn.style.display = 'inline';
+                signUpBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
                 addVideoBtn.style.display = 'none';
-                addVideoContainer.style.display = 'none'; // Hide add video container
-                promptMessage.style.display = 'block'; // Show prompt message
             }
         }
 
-        signInBtn.addEventListener('click', () => {
-            // Redirect to registration page
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
+        logInBtn.addEventListener('click', () => {
+            const user = prompt("Please enter your username:");
+            const password = prompt("Please enter your password:");
+
+            // Check if the provided credentials match any user in the simulated database
+            const foundUser = users.find(u => u.username === user && u.password === password);
+
+            if (foundUser) {
+                // Store username in local storage upon successful login
+                localStorage.setItem('coolkidzUsername', foundUser.username);
+                updateUI(); // Update UI after logging in
+                // Redirect to the registration page
+                window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
+            } else {
+                alert("Invalid username or password. Please try again.");
+            }
+        });
+
+        signUpBtn.addEventListener('click', () => {
+            const newUser = prompt("Enter a new username:");
+            const newPassword = prompt("Enter a new password:");
+            // Add new user to the simulated database
+            users.push({ username: newUser, password: newPassword });
+            alert("Account created successfully! Please log in.");
         });
 
         signOutBtn.addEventListener('click', () => {
             localStorage.removeItem('coolkidzUsername');
             updateUI();
-            // Redirect to registration page after signing out
+            // Redirect to the registration page after signing out
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
         addVideoBtn.addEventListener('click', () => {
-            addVideoContainer.style.display = 'block'; // Show add video container
-        });
+            // Create an input element for file selection
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'video/*'; // Only accept video files
 
-        chooseFileBtn.addEventListener('click', () => {
+            fileInput.onchange = () => {
+                const file = fileInput.files[0]; // Get the selected file
+                if (file) {
+                    const fileUrl = URL.createObjectURL(file); // Create a URL for the file
+                    userVideoIframe.src = fileUrl; // Set iframe source to user video
+                    videoPreview.style.display = 'block'; // Show video preview
+
+                    // Generate a unique link for sharing
+                    const uniqueLink = `https://coolkidz.com/user/video/${localStorage.getItem('coolkidzUsername')}-${Date.now()}`;
+                    linkContainer.innerHTML = `Your video link: <a href="${uniqueLink}" target="_blank">${uniqueLink}</a>`;
+                    linkContainer.style.display = 'block';
+                } else {
+                    alert("Invalid video. Please select a valid video file.");
+                }
+            };
+
             fileInput.click(); // Trigger file input click
         });
 
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const url = URL.createObjectURL(file); // Create a temporary URL for the video file
-                userVideoIframe.src = url; // Set iframe source to the user video
-                videoPreview.style.display = 'block'; // Show video preview
-                copyLinkBtn.style.display = 'inline'; // Show copy link button
-            }
-        });
-
-        videoUrlInput.addEventListener('input', () => {
-            const url = videoUrlInput.value;
-            if (url) {
-                userVideoIframe.src = url; // Set iframe source to user-provided URL
-                videoPreview.style.display = 'block'; // Show video preview
-                copyLinkBtn.style.display = 'inline'; // Show copy link button
-            }
-        });
-
-        postVideoBtn.addEventListener('click', () => {
-            const username = localStorage.getItem('coolkidzUsername');
-            const videoUrl = videoUrlInput.value || userVideoIframe.src;
-            if (videoUrl) {
-                // Here, you could save the videoUrl associated with the username to your backend
-                alert(`Your video has been safely posted on CoolKidZ! Here is your URL: ${videoUrl}`);
-                copyLinkBtn.style.display = 'inline';
-            } else {
-                alert('Invalid video. Please try again.');
-            }
-        });
-
-        copyLinkBtn.addEventListener('click', () => {
-            const videoUrl = videoUrlInput.value || userVideoIframe.src;
-            navigator.clipboard.writeText(videoUrl).then(() => {
-                alert('Video URL copied to clipboard!');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-            // Redirect back to homepage after copying link
+        document.getElementById('copy-link-btn').addEventListener('click', () => {
+            const link = linkContainer.querySelector('a').href;
+            navigator.clipboard.writeText(link)
+                .then(() => alert("Link copied to clipboard!"))
+                .catch(err => alert("Failed to copy link: ", err));
+            // Redirect back to the homepage after copying
             window.location.href = 'https://wafflenugget.github.io/CoolKidZ/';
         });
 
         updateUI(); // Call this function to update the UI based on local storage
     </script>
 </body>
+</html>
