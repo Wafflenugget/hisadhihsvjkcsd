@@ -29,6 +29,10 @@
             top: 0;
         }
 
+        h1 {
+            cursor: pointer; /* Pointer cursor for clickable heading */
+        }
+
         #welcome-message {
             font-size: 18px;
         }
@@ -80,6 +84,7 @@
 </head>
 <body>
     <header>
+        <h1 onclick="refreshPage()">CoolKidZ</h1>
         <div id="welcome-message"></div>
         <div>
             <button id="log-in-btn">Log In</button>
@@ -89,8 +94,6 @@
         </div>
     </header>
     <div class="container">
-        <h1>CoolKidZ</h1>
-        <h2>Please log in or sign up</h2>
         <div class="video-container" id="video-list">
             <h3>Videos:</h3>
             <div class="video">
@@ -120,6 +123,10 @@
         // Simulated user data (for demonstration purposes)
         const users = [];
 
+        function refreshPage() {
+            location.reload(); // Refresh the page
+        }
+
         function updateUI() {
             const username = localStorage.getItem('coolkidzUsername');
             if (username) {
@@ -129,7 +136,7 @@
                 signOutBtn.style.display = 'inline';
                 addVideoBtn.style.display = 'inline';
             } else {
-                welcomeMessage.textContent = 'Please log in or sign up';
+                welcomeMessage.textContent = '';
                 logInBtn.style.display = 'inline';
                 signUpBtn.style.display = 'inline';
                 signOutBtn.style.display = 'none';
