@@ -6,129 +6,156 @@
     <title>CoolKidZ Homepage</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-
-        header {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fHww');
+            background-size: cover;
             display: flex;
-            justify-content: space-between;
-            padding: 10px;
-            background-color: #4CAF50; /* Header color */
+            flex-direction: column;
+            align-items: flex-start;
+            height: 100vh;
             color: white;
         }
 
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            position: relative;
+        }
+
+        #welcome-message {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
         .container {
-            padding: 20px;
+            text-align: center;
+            margin-top: 50px;
         }
 
         .video-container {
             margin-top: 20px;
         }
 
-        iframe {
+        .video {
             margin: 10px 0;
-            max-width: 100%;
         }
 
-        .green-button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+        #add-video-modal {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #add-video-modal input {
+            width: 100%;
             padding: 10px;
-            cursor: pointer;
-        }
-
-        #welcome-message {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>CoolKidZ</h1>
+        <div id="welcome-message">Please sign in</div>
         <div>
-            <button id="log-in-btn" class="green-button">Log In</button>
-            <button id="sign-out-btn" class="green-button">Sign Out</button>
-            <button id="add-video-btn" class="green-button">Add Video</button>
+            <button id="sign-in-btn">Sign In</button>
+            <button id="sign-out-btn" style="display: none;">Sign Out</button>
+            <button id="add-video-btn" style="display: none;">Add Video</button>
         </div>
     </header>
-
     <div class="container">
-        <div id="welcome-message"></div>
-        <div id="sign-in-prompt">Please sign in to continue.</div>
-        <div class="video-container" id="video-container">
-            <h2>Videos:</h2>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <!-- Display user-submitted videos here -->
+        <h1>CoolKidZ</h1>
+        <div class="video-container" id="video-list">
+            <div class="video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <p>Skateboard Video</p>
+            </div>
         </div>
     </div>
 
+    <div id="add-video-modal">
+        <h2>Add Your Video</h2>
+        <input type="text" id="video-url" placeholder="Enter YouTube video URL">
+        <button id="confirm-add-btn">Add Video</button>
+        <button id="exit-add-btn">Exit</button>
+    </div>
+
     <script>
-        // Function to update the welcome message
-        function updateWelcomeMessage() {
-            const messageElement = document.getElementById('welcome-message');
+        const signInBtn = document.getElementById('sign-in-btn');
+        const signOutBtn = document.getElementById('sign-out-btn');
+        const addVideoBtn = document.getElementById('add-video-btn');
+        const videoList = document.getElementById('video-list');
+        const addVideoModal = document.getElementById('add-video-modal');
+        const videoUrlInput = document.getElementById('video-url');
+        const exitAddBtn = document.getElementById('exit-add-btn');
+        const confirmAddBtn = document.getElementById('confirm-add-btn');
+        const welcomeMessage = document.getElementById('welcome-message');
+
+        function updateUI() {
             const username = localStorage.getItem('coolkidzUsername');
-
             if (username) {
-                messageElement.textContent = `Welcome back, ${username}!`;
-                document.getElementById('sign-in-prompt').style.display = 'none'; // Hide sign-in prompt
-                document.getElementById('log-in-btn').style.display = 'none'; // Hide log-in button
+                welcomeMessage.textContent = `Welcome back, ${username}!`;
+                signInBtn.style.display = 'none';
+                signOutBtn.style.display = 'inline';
+                addVideoBtn.style.display = 'inline';
             } else {
-                messageElement.textContent = '';
-                document.getElementById('sign-in-prompt').style.display = 'block'; // Show sign-in prompt
-                document.getElementById('log-in-btn').style.display = 'block'; // Show log-in button
+                welcomeMessage.textContent = 'Please sign in';
+                signInBtn.style.display = 'inline';
+                signOutBtn.style.display = 'none';
+                addVideoBtn.style.display = 'none';
             }
         }
 
-        // Call the function to check for user and update the message on page load
-        window.onload = function() {
-            updateWelcomeMessage();
-            displayVideos();
-        };
-
-        // Function to display videos from localStorage
-        function displayVideos() {
-            const videoContainer = document.getElementById('video-container');
-            const videos = JSON.parse(localStorage.getItem('coolKidZVideos')) || [];
-
-            videos.forEach(videoUrl => {
-                const videoId = videoUrl.split('v=')[1].split('&')[0]; // Extract video ID from URL
-                const iframe = document.createElement('iframe');
-                iframe.width = "560";
-                iframe.height = "315";
-                iframe.src = `https://www.youtube.com/embed/${videoId}`;
-                iframe.frameBorder = "0";
-                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-                iframe.allowFullscreen = true;
-
-                videoContainer.appendChild(iframe);
-            });
-        }
-
-        // Sign out function
-        document.getElementById('sign-out-btn').addEventListener('click', function() {
-            localStorage.removeItem('coolkidzUsername'); // Remove the stored username
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/'; // Redirect to registration
+        signInBtn.addEventListener('click', () => {
+            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Registration/';
         });
 
-        // Add video function
-        document.getElementById('add-video-btn').addEventListener('click', function() {
-            window.location.href = 'https://wafflenugget.github.io/CoolKidZ-Add-Video/'; // Redirect to the Add Video page
+        signOutBtn.addEventListener('click', () => {
+            localStorage.removeItem('coolkidzUsername');
+            updateUI();
         });
 
-        // Log In button functionality
-        document.getElementById('log-in-btn').addEventListener('click', function() {
-            const username = prompt("Enter your username:");
-            if (username) {
-                localStorage.setItem('coolkidzUsername', username);
-                updateWelcomeMessage(); // Update welcome message
-            } else {
-                alert("Please enter a valid username.");
+        addVideoBtn.addEventListener('click', () => {
+            addVideoModal.style.display = 'block'; // Show the modal when the Add Video button is clicked
+        });
+
+        exitAddBtn.addEventListener('click', () => {
+            addVideoModal.style.display = 'none'; // Hide the modal when the exit button is clicked
+        });
+
+        confirmAddBtn.addEventListener('click', () => {
+            const videoUrl = videoUrlInput.value;
+            if (videoUrl) {
+                const videoHTML = `<div class="video"><iframe width="560" height="315" src="${videoUrl.replace('watch?v=', 'embed/')}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+                videoList.insertAdjacentHTML('beforeend', videoHTML);
+                videoUrlInput.value = ''; // Clear the input field
+                addVideoModal.style.display = 'none'; // Hide the modal after adding the video
             }
         });
+
+        updateUI(); // Call this function to update the UI based on local storage
     </script>
 </body>
 </html>
