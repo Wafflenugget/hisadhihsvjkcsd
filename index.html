@@ -1,138 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoolKidZ Registration</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXJ0fGVufDB8fDB8fHww');
-            background-size: cover;
-            background-position: center;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 400px;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        h1 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            font-size: 16px;
-            color: #333;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        .video-container {
-            margin-top: 20px;
-        }
-
-        .signout-btn {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #FF5733;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .signout-btn:hover {
-            background-color: #e94c2f;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoolKidZ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+    .buttons {
+      display: flex;
+      align-items: center;
+    }
+    .buttons button {
+      background-color: green;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .buttons button:hover {
+      background-color: darkgreen;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.6);
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      color: #333;
+    }
+    .file-input {
+      display: none;
+    }
+    .hidden {
+      display: none;
+    }
+    .welcome-message {
+      font-size: 18px;
+      color: green;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Registration Form -->
-    <div class="container">
-        <h1>CoolKidZ Registration</h1>
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="username">Username (6-9 letters):</label>
-                <input type="text" id="username" name="username" minlength="6" maxlength="9" required>
-            </div>
-            <button type="submit" class="btn">Sign Up</button>
-        </form>
+  <div class="header">
+    <h1 id="coolkidZHeading" onclick="refreshPage()">CoolKidZ</h1>
+    <div class="buttons">
+      <button id="signInButton" onclick="signIn()">Sign In</button>
+      <button id="logOutButton" class="hidden" onclick="logOut()">Log Out</button>
+      <button id="addVideoButton" class="hidden" onclick="addVideo()">Add Video</button>
     </div>
+  </div>
 
-    <!-- YouTube Video Display -->
-    <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/p3NXd3DhH08" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
+  <div class="container">
+    <div id="welcomeMessage" class="welcome-message hidden"></div>
+    <input type="file" id="fileInput" class="file-input" accept="video/mp4" onchange="handleFileSelect(event)">
+  </div>
 
-    <!-- Sign Out Button (Initially hidden) -->
-    <button class="signout-btn" id="signOutButton" style="display: none;" onclick="signOut()">Sign Out</button>
+  <script>
+    // Simulate user login status
+    let loggedIn = false;
+    let username = "";
 
-    <script>
-        // Handle Registration
-        const form = document.getElementById('registrationForm');
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
+    // Sign In Function
+    function signIn() {
+      // Simulate a registration form (for now, we use prompt)
+      username = prompt("Enter your username:");
+      if (username) {
+        loggedIn = true;
+        updateUI();
+        alert("Welcome " + username);
+      }
+    }
 
-            const username = document.getElementById('username').value;
-            
-            if (username.length >= 6 && username.length <= 9) {
-                // Show sign-out button after registration
-                document.getElementById('signOutButton').style.display = 'block';
+    // Log Out Function
+    function logOut() {
+      loggedIn = false;
+      username = "";
+      updateUI();
+      alert("You have logged out.");
+    }
 
-                // Simulate redirect after successful registration
-                alert("Registration successful! Redirecting to your CoolKidZ profile...");
-                window.location.href = "https://codepen.io/KIDS-LEARNING-FOR-EVRYONE/pen/azodByN";
-            } else {
-                alert("Please enter a valid username (6-9 letters).");
-            }
-        });
+    // Update UI based on login status
+    function updateUI() {
+      if (loggedIn) {
+        document.getElementById("signInButton").classList.add("hidden");
+        document.getElementById("logOutButton").classList.remove("hidden");
+        document.getElementById("addVideoButton").classList.remove("hidden");
+        document.getElementById("welcomeMessage").classList.remove("hidden");
+        document.getElementById("welcomeMessage").textContent = "Welcome, " + username;
+      } else {
+        document.getElementById("signInButton").classList.remove("hidden");
+        document.getElementById("logOutButton").classList.add("hidden");
+        document.getElementById("addVideoButton").classList.add("hidden");
+        document.getElementById("welcomeMessage").classList.add("hidden");
+      }
+    }
 
-        // Sign Out Button Logic
-        function signOut() {
-            alert("You have been signed out.");
-            window.location.reload();
-        }
-    </script>
+    // Add Video Function
+    function addVideo() {
+      const choice = prompt("Do you want to upload a video file or provide a URL? (file/url)");
+      if (choice.toLowerCase() === "file") {
+        document.getElementById("fileInput").click(); // Trigger file input
+      } else if (choice.toLowerCase() === "url") {
+        const url = prompt("Enter the video URL:");
+        alert("Video URL entered: " + url);
+      } else {
+        alert("Invalid choice. Please enter 'file' or 'url'.");
+      }
+    }
+
+    // Handle file selection
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (file && file.type === "video/mp4") {
+        alert("Video file selected: " + file.name);
+      } else {
+        alert("Please select an MP4 file.");
+      }
+    }
+
+    // Refresh the page when clicking on CoolKidZ heading
+    function refreshPage() {
+      location.reload();
+    }
+
+    // Update UI on page load
+    updateUI();
+  </script>
 
 </body>
 </html>
