@@ -39,6 +39,47 @@ body {
   background-color: darkgreen;
 }
 
+/* Form Styling */
+.form-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 350px;
+  text-align: center;
+}
+
+.form-box h2 {
+  margin-bottom: 15px;
+  color: green;
+  font-size: 22px;
+}
+
+.form-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-box button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-box button:hover {
+  background-color: darkgreen;
+}
+
 /* Media Container */
 .media-container {
   display: grid;
