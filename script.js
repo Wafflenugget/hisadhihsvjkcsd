@@ -1,13 +1,114 @@
-// Function to show the Sign Up form
-function showSignUp() {
-  document.getElementById('signUpForm').classList.remove('hidden');
-  document.getElementById('loginForm').classList.add('hidden');
+// Function to save media (video/image) to localStorage
+function saveMediaToStorage(mediaData) {
+  const media = JSON.parse(localStorage.getItem('media')) || [];
+  media.push(mediaData);
+  localStorage.setItem('media', JSON.stringify(media));
 }
 
-// Function to show the Log In form
-function showSignIn() {
-  document.getElementById('loginForm').classList.remove('hidden');
-  document.getElementById('signUpForm').classList.add('hidden');
+// Function to load media (video/image) from localStorage
+function loadMedia() {
+  const media = JSON.parse(localStorage.getItem('media')) || [];
+  const currentUser = localStorage.getItem('currentUser');
+
+  media.forEach((mediaData) => {
+    renderMedia(mediaData, currentUser);
+  });
+}
+
+// Function to render media (video/image) and the delete button
+function renderMedia(mediaData, currentUser) {
+  // Check if the media contains the expected properties
+  if (!mediaData || !mediaData.src || !mediaData.title || !mediaData.uploader) {
+    console.error('Invalid media data:', mediaData);
+    return;
+  }
+
+  const mediaContainer = document.createElement('div');
+  mediaContainer.className = 'media-entry';
+
+  const mediaElement = document.createElement(mediaData.type === 'video' ? 'video' : 'img');
+  mediaElement.src = mediaData.src;
+  if (mediaData.type === 'video') {
+    mediaElement.controls = true;
+  }
+
+  const titleBox = document.createElement('div');
+  titleBox.className = 'media-title';
+  titleBox.innerText = mediaData.title;
+
+  const uploaderBox = document.createElement('div');
+  uploaderBox.className = 'media-uploader';
+  uploaderBox.innerText = `Uploaded by ${mediaData.uploader}`;
+
+  // Add delete button only if the current user is the uploader
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'delete-button';
+  deleteButton.innerHTML = '🗑️'; // Trash icon
+  deleteButton.onclick = function () {
+    if (mediaData.uploader === currentUser) {
+      deleteMedia(mediaData);
+    } else {
+      alert('You can only delete your own media!');
+    }
+  };
+
+  mediaContainer.appendChild(mediaElement);
+  mediaContainer.appendChild(titleBox);
+  mediaContainer.appendChild(uploaderBox);
+  mediaContainer.appendChild(deleteButton);
+
+  document.getElementById('mediaContainer').appendChild(mediaContainer);
+}
+
+// Function to delete media
+function deleteMedia(mediaData) {
+  let media = JSON.parse(localStorage.getItem('media')) || [];
+  media = media.filter((item) => item.src !== mediaData.src);
+  localStorage.setItem('media', JSON.stringify(media));
+
+  // Reload media on the page to reflect the changes
+  document.getElementById('mediaContainer').innerHTML = '';
+  loadMedia();
+
+  alert('Media deleted successfully!');
+}
+
+// Function to handle adding a video or image
+function addMedia() {
+  const mediaFile = document.createElement('input');
+  mediaFile.type = 'file';
+  mediaFile.accept = 'image/*, video/*'; // Allow both video and image files
+
+  mediaFile.onchange = function () {
+    const file = mediaFile.files[0];
+    if (!file) {
+      alert('Please select a media file!');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const mediaTitle = prompt('Enter the title for your media:');
+      if (!mediaTitle) {
+        alert('Media title cannot be empty!');
+        return;
+      }
+
+      const currentUser = localStorage.getItem('currentUser') || 'Unknown User';
+      const mediaData = {
+        src: e.target.result,
+        title: mediaTitle,
+        uploader: currentUser,
+        type: file.type.startsWith('video') ? 'video' : 'image'
+      };
+
+      saveMediaToStorage(mediaData);
+      renderMedia(mediaData, currentUser);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  mediaFile.click();
 }
 
 // Function to handle Sign Up
@@ -76,120 +177,9 @@ function toggleLoggedInState(isLoggedIn) {
   document.getElementById('signInButton').classList.toggle('hidden', isLoggedIn);
 }
 
-// Function to handle adding a video
-function addVideo() {
-  const videoFile = document.createElement('input');
-  videoFile.type = 'file';
-  videoFile.accept = 'video/*';
-
-  videoFile.onchange = function () {
-    const file = videoFile.files[0];
-    if (!file) {
-      alert('Please select a video file!');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const videoTitle = prompt('Enter the title for your video:');
-      if (!videoTitle) {
-        alert('Video title cannot be empty!');
-        return;
-      }
-
-      const currentUser = localStorage.getItem('currentUser') || 'Unknown User';
-
-      const videoData = {
-        src: e.target.result,
-        title: videoTitle,
-        uploader: currentUser,
-      };
-
-      saveVideoToStorage(videoData);
-      renderVideo(videoData);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  videoFile.click();
-}
-
-// Function to save the video data to localStorage
-function saveVideoToStorage(videoData) {
-  const videos = JSON.parse(localStorage.getItem('videos')) || [];
-  videos.push(videoData);
-  localStorage.setItem('videos', JSON.stringify(videos));
-}
-
-// Function to render a video on the page
-function renderVideo(videoData) {
-  // Check if the videoData contains the expected properties
-  if (!videoData || !videoData.src || !videoData.title || !videoData.uploader) {
-    console.error('Invalid video data:', videoData);
-    return; // Exit if video data is invalid
-  }
-
-  const videoContainer = document.createElement('div');
-  videoContainer.className = 'video-entry';
-
-  const videoElement = document.createElement('video');
-  videoElement.src = videoData.src;
-  videoElement.controls = true;
-
-  const titleBox = document.createElement('div');
-  titleBox.className = 'video-title';
-  titleBox.innerText = videoData.title;
-
-  const uploaderBox = document.createElement('div');
-  uploaderBox.className = 'video-uploader';
-  uploaderBox.innerText = `Uploaded by ${videoData.uploader}`;
-  uploaderBox.style.color = 'red'; // Set the uploader text color to red
-
-  const deleteButton = document.createElement('button');
-  deleteButton.innerText = 'Delete Video';
-  deleteButton.onclick = function() {
-    if (videoData.uploader === localStorage.getItem('currentUser')) {
-      deleteVideo(videoData);
-    } else {
-      alert('You can only delete your own videos.');
-    }
-  };
-
-  videoContainer.appendChild(videoElement);
-  videoContainer.appendChild(titleBox);
-  videoContainer.appendChild(uploaderBox);
-  videoContainer.appendChild(deleteButton); // Add the delete button to the video container
-
-  document.getElementById('videosContainer').appendChild(videoContainer);
-}
-
-// Function to delete a video
-function deleteVideo(videoData) {
-  // Get the current videos from localStorage
-  let videos = JSON.parse(localStorage.getItem('videos')) || [];
-
-  // Filter out the video to be deleted
-  videos = videos.filter(video => video.src !== videoData.src);
-
-  // Save the updated videos array back to localStorage
-  localStorage.setItem('videos', JSON.stringify(videos));
-
-  // Reload the videos on the page to reflect the changes
-  document.getElementById('videosContainer').innerHTML = ''; // Clear current videos
-  loadVideos(); // Load videos again to display updated list
-
-  alert('Video deleted successfully!');
-}
-
-// Function to load videos from localStorage on page load
-function loadVideos() {
-  const videos = JSON.parse(localStorage.getItem('videos')) || [];
-  videos.forEach(renderVideo);
-}
-
-// Load videos when the page loads
+// Load videos/images when the page loads
 window.onload = function () {
-  loadVideos();
+  loadMedia();
 
   const currentUser = localStorage.getItem('currentUser');
   if (currentUser) {
