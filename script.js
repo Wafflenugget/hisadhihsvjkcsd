@@ -77,7 +77,7 @@ function deleteMedia(mediaData) {
 function addMedia() {
   const mediaFile = document.createElement('input');
   mediaFile.type = 'file';
-  mediaFile.accept = 'image/*, video/*'; // Allow both video and image files
+  mediaFile.accept = 'image/*, video/*'; // Allow both images and videos
 
   mediaFile.onchange = function () {
     const file = mediaFile.files[0];
@@ -95,11 +95,12 @@ function addMedia() {
       }
 
       const currentUser = localStorage.getItem('currentUser') || 'Unknown User';
+
       const mediaData = {
         src: e.target.result,
         title: mediaTitle,
         uploader: currentUser,
-        type: file.type.startsWith('video') ? 'video' : 'image'
+        type: file.type.startsWith('video') ? 'video' : 'image',
       };
 
       saveMediaToStorage(mediaData);
@@ -155,7 +156,7 @@ function logIn() {
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('signUpForm').classList.add('hidden');
     toggleLoggedInState(true);
-    localStorage.setItem('currentUser', username); // Save the current user
+    localStorage.setItem('currentUser', username);
   } else {
     alert('Invalid username or password.');
   }
@@ -166,18 +167,30 @@ function logOut() {
   document.getElementById('welcomeMessage').classList.add('hidden');
   toggleLoggedInState(false);
   alert('You have been logged out.');
-  localStorage.removeItem('currentUser'); // Remove current user
+  localStorage.removeItem('currentUser');
 }
 
 // Function to toggle between logged-in and logged-out states
 function toggleLoggedInState(isLoggedIn) {
   document.getElementById('logOutButton').classList.toggle('hidden', !isLoggedIn);
-  document.getElementById('addVideoButton').classList.toggle('hidden', !isLoggedIn);
+  document.getElementById('addMediaButton').classList.toggle('hidden', !isLoggedIn);
   document.getElementById('signUpButton').classList.toggle('hidden', isLoggedIn);
   document.getElementById('signInButton').classList.toggle('hidden', isLoggedIn);
 }
 
-// Load videos/images when the page loads
+// Function to show Sign Up form
+function showSignUp() {
+  document.getElementById('signUpForm').classList.remove('hidden');
+  document.getElementById('loginForm').classList.add('hidden');
+}
+
+// Function to show Sign In form
+function showSignIn() {
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('signUpForm').classList.add('hidden');
+}
+
+// Load media on page load
 window.onload = function () {
   loadMedia();
 
